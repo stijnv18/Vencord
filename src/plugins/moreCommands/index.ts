@@ -19,6 +19,7 @@
 import { ApplicationCommandInputType, findOption, OptionalMessageOption, RequiredMessageOption, sendBotMessage } from "@api/Commands";
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
+import Uwuifier from "uwuifier";
 
 
 function mock(input: string): string {
@@ -27,6 +28,13 @@ function mock(input: string): string {
         output += i % 2 ? input[i].toUpperCase() : input[i].toLowerCase();
     }
     return output;
+}
+
+
+const uwuifier = new Uwuifier();
+
+async function uwuify(content) {
+    return uwuifier.uwuifySentence(content);
 }
 
 export default definePlugin({
@@ -62,5 +70,18 @@ export default definePlugin({
                 content: mock(findOption(opts, "message", ""))
             }),
         },
+
+
+        {
+            name: "uwu",
+            description: "uwuify your text",
+            options: [RequiredMessageOption],
+            execute: async opts => {
+                const content = findOption(opts, "message", "");
+                const uwufied = await uwuify(content); // You need to implement this function
+                return { content: uwufied };
+            },
+        },
+
     ]
 });
